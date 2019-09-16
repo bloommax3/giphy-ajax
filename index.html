@@ -12,9 +12,11 @@
       margin: 10px;
     }
   </style>
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 
-<body>
+<body class="alert-dark">
 
   <div class="container">
     <h1>Gif Search</h1>
@@ -23,11 +25,11 @@
     <div id="buttons-view"></div>
 
     <form id="gif-form">
-      <label for="gif-input">Add a gif, Yo!</label>
+      <label for="gif-input"></label>
       <input type="text" id="gif-input"><br>
 
       <!-- Button triggers new gif to be added -->
-      <input id="add-gif" type="submit" value="Add a gif, Yo!">
+      <input id="add-gif" type="submit" value="Add a gif, Yo!" class="btn btn-success">
     </form>
 
     <!-- gifs will get dumped here -->
@@ -49,6 +51,7 @@
         }).then(function(response) {
 
           // YOUR CODE GOES HERE!!!
+        $("#gifs-view").empty()
         console.log(response)
         for(n=0; n<10; n++){
             var temp = response.data[n]
@@ -56,6 +59,7 @@
             let p = $("<p>")
             let img = $("<img>").attr("id", "gif-img") 
             let a = $("<p>").text("Rating: "+temp.rating)
+            p.addClass("jumbotron")
             img.attr("state", "animate")
             img.attr("src", gifUrl)
             img.attr("animate-url", temp.images.fixed_height.url)          
@@ -83,6 +87,7 @@
           var a = $("<button>");
           // Adds a class of gif to our button
           a.addClass("gif");
+          a.addClass("btn btn-danger")
           // Added a data-attribute
           a.attr("data-name", gifs[i]);
           // Provided the initial button text
