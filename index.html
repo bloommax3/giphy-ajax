@@ -36,22 +36,34 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript">
       // Initial array of gifs
-      var gifs = ["Kanye", "Trump", "corgis", "jon jones"];
+      var gifs = ["Kanye", "Trump", "corgis", "Jon Jones"];
 
       // displaygifInfo function re-renders the HTML to display the appropriate content
       function displaygifInfo() {
 
         var gif = $(this).attr("data-name");
-        var queryURL = "https://api.giphy.com/v1/gifs/trending?api_key=BkaUZZWcFij6J7AoQj3WtPb1R2p9O6V9";
-
-        // Creates AJAX call for the specific gif button being clicked
+        var queryURL = "https://api.giphy.com/v1/gifs/search?api_key=atdF1F3OMs8BG3ssXXabM8SKzzqUBy3h&q="+gif+"&limit=10&offset=0&rating=PG&lang=en"
         $.ajax({
           url: queryURL,
           method: "GET"
         }).then(function(response) {
 
           // YOUR CODE GOES HERE!!!
-
+        console.log(response)
+        for(n=0; n<10; n++){
+            var temp = response.data[n]
+            var gifUrl = temp.images.fixed_height.url
+            let p = $("<p>")
+            let img = $("<img>").attr("id", "gif-img") 
+            let a = $("<p>").text("Rating: "+temp.rating)
+            img.attr("state", "animate")
+            img.attr("src", gifUrl)
+            img.attr("animate-url", temp.images.fixed_height.url)          
+            img.attr("still-url", temp.images.original_still.url)
+            p.append(img)
+            p.append(a)
+            $("#gifs-view").prepend(p)
+        }
         });
 
       }
@@ -99,6 +111,21 @@
 
       // Calling the renderButtons function to display the intial buttons
       renderButtons();
+
+      //Write an on click to change the gifs to still or animated
+      $("#gifs-view").on("click", "#gif-img", function(){
+          if($(this).attr("state")==="animate"){
+              $(this).attr("src", $(this).attr("still-url"))
+              $(this).attr("state", "still")
+              
+          }
+          else{
+            var animate = $(this).attr("animate-url")
+            $(this).attr("src", $(this).attr("animate-url"))
+            $(this).attr("state", "animate")
+          }
+
+      })
     </script>
   </div>
 </body>
